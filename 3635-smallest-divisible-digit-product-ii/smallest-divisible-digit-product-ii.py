@@ -71,12 +71,9 @@ class Solution:
                         + self._construct(suffix_factors)
                     )
 
-        # 5. No same-length answer works. The next possible length is len(num)+1.
-        #    Prepend just enough '1's to make it longer than num.
         factor_count = self._get_factor_count(prime_count)
         return '1' * (len(num) + 1 - sum(factor_count.values())) + self._construct(factor_count)
 
-    # ---------- helpers ----------
 
     def _get_prime_count(self, t: int):
         count = collections.Counter()
@@ -87,7 +84,6 @@ class Solution:
         return count, t == 1
 
     def _get_factor_count(self, count: dict) -> dict:
-        """Pack prime counts into the smallest lexicographic digit multiset."""
         c2 = count.get(2, 0)
         c3 = count.get(3, 0)
         c5 = count.get(5, 0)
@@ -106,7 +102,6 @@ class Solution:
             cnt2 = cnt3 = 0
             cnt6 = 1
 
-        # Prefer 2+6 over 3+4  (both use one 3 and two 2s, but "26" < "34")
         if cnt3 == 1 and cnt4 == 1:
             cnt2 = 1
             cnt6 = 1
@@ -118,7 +113,6 @@ class Solution:
         }
 
     def _construct(self, factors: dict) -> str:
-        """Build the smallest string from a digit multiset (digits sorted ascending)."""
         return ''.join(str(d) * factors[d] for d in range(2, 10))
 
     def _is_subset(self, a: dict, b: dict) -> bool:
